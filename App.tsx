@@ -1,23 +1,28 @@
-import React from "react";
+// App.tsx
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "./screens/HomeScreen";
-import AddScreen from "./screens/AddScreen";
+import CalendarScreen from "./screens/CalendarScreen"; // ✅ カレンダー画面を読み込む
+import { View, Text, Button } from "react-native";
 
-export type RootStackParamList = {
-  Home: undefined;
-  Add: undefined;
-};
+const Stack = createNativeStackNavigator();
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+function HomeScreen({ navigation }) {
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>ホーム画面</Text>
+      <Button title="カレンダーを見る" onPress={() => navigation.navigate("Calendar")} />
+    </View>
+  );
+}
 
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} options={{ title: "筋トレメモ" }} />
-        <Stack.Screen name="Add" component={AddScreen} options={{ title: "追加" }} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Calendar" component={CalendarScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+
