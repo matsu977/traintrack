@@ -1,13 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Training } from "../types";
+import { Workout } from "../types";
 
-const STORAGE_KEY = "trainings";
+const KEY = "workouts";
 
-export const saveTrainings = async (trainings: Training[]) => {
-  await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(trainings));
+export const loadWorkouts = async (): Promise<Workout[]> => {
+  const json = await AsyncStorage.getItem(KEY);
+  return json ? JSON.parse(json) : [];
 };
 
-export const loadTrainings = async (): Promise<Training[]> => {
-  const data = await AsyncStorage.getItem(STORAGE_KEY);
-  return data ? JSON.parse(data) : [];
+export const saveWorkouts = async (data: Workout[]) => {
+  await AsyncStorage.setItem(KEY, JSON.stringify(data));
 };
