@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { View, FlatList, Text, Button } from "react-native";
+import { View, FlatList } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import dayjs from "dayjs";
@@ -7,6 +7,7 @@ import { Workout } from "../types";
 import { loadWorkouts } from "../utils/storage";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../App";
+import { Text, Button, Card } from "react-native-paper";
 
 export default function CalendarScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
@@ -45,19 +46,33 @@ export default function CalendarScreen() {
       <FlatList
         data={todays}
         keyExtractor={(item) => item.id}
-        ListEmptyComponent={<Text style={{ textAlign: "center", marginTop: 20 }}>記録がありません</Text>}
+        ListEmptyComponent={
+          <Text style={{ textAlign: "center", marginTop: 20, color: "#999" }}>
+            記録がありません
+          </Text>
+        }
         renderItem={({ item }) => (
-          <View style={{ borderBottomWidth: 1, borderColor: "#ccc", padding: 12 }}>
-            <Text style={{ fontWeight: "bold" }}>{item.title}</Text>
-            {item.memo ? <Text style={{ marginTop: 4 }}>{item.memo}</Text> : null}
-          </View>
+          <Card
+            style={{ marginHorizontal: 16, marginVertical: 8 }}
+            onPress={() => navigation.navigate("Edit", { date: item.date, workout: item })}
+          >
+            <Card.Title title={item.title} />
+            {item.memo && (
+              <Card.Content>
+                <Text>{item.memo}</Text>
+              </Card.Content>
+            )}
+          </Card>
         )}
       />
 
       <Button
-        title="この日の記録を書く"
+        mode="contained"
         onPress={() => navigation.navigate("Edit", { date: selectedDate })}
-      />
+        style={{ margin: 16 }}
+      >
+        この日の記録を書く
+      </Button>
     </View>
   );
 }
